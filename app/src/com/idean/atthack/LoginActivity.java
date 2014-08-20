@@ -137,9 +137,10 @@ public class LoginActivity extends Activity {
 				Pref.USERNAME.set(LoginActivity.this, user);
 				Pref.PIN.set(LoginActivity.this, pin);
 				Pref.VIN.set(LoginActivity.this, vin);
+				Pref.SERVER.set(LoginActivity.this, Pref.SERVER.get(LoginActivity.this));
 				
 				Log.d(TAG,"Stored username " + Pref.USERNAME.get(LoginActivity.this)
-						 + "Pin " + Pref.PIN.get(LoginActivity.this));
+						 + "Pin " + Pref.PIN.get(LoginActivity.this) + ", Server " + Pref.SERVER.get(LoginActivity.this));
 				
 				finish();
 				startActivity(new Intent(LoginActivity.this, ListCategoriesActivity.class));

@@ -9,4 +9,5 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ApiName {
 	public String value(); 
+	public boolean isRequireStatusCheck();
 }

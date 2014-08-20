@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <EditTextPreference android:title="VIN" android:key="pref_vin" android:summary="Vehicle identification number"/>
+    <EditTextPreference android:title="Server Base URL" android:defaultValue="http://lightning.att.io:3000" android:key="pref_server" android:summary="e.g. http://lightning.att.io:3000"/>
+    
+
+</PreferenceScreen>

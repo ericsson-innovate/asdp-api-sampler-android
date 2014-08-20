@@ -2,6 +2,7 @@ package com.idean.atthack;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.idean.atthack.api.ApiSpecHelper;
 import com.idean.atthack.api.ApiSpecHelper.ApiCategory;
 
 public class ListCategoriesActivity extends ActionBarActivity implements OnItemClickListener {
@@ -31,9 +33,20 @@ public class ListCategoriesActivity extends ActionBarActivity implements OnItemC
 		mListView = (ListView)findViewById(android.R.id.list);
 		mListView.setAdapter(new ApiCategoryAdapter(this));
 		mListView.setOnItemClickListener(this);
-		Log.d(TAG,"Got " + Pref.USERNAME.get(this) + ", " + Pref.VIN.get(this));
+		Log.d(TAG,"Got username: " + Pref.USERNAME.get(this) + ", vin: " + Pref.VIN.get(this) + ", server: " + Pref.SERVER.get(this));
+
+		new LoadApiTask().execute(null,null,null);
 	}
  
+	private class LoadApiTask extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected Void doInBackground(Void... params) {
+			// Load API's from server
+			ApiSpecHelper.SINGLETON.loadSpecs(ListCategoriesActivity.this);
+			return null;
+		}
+		
+	}
 	private class ApiCategoryAdapter extends ArrayAdapter<ApiCategory> {
 
 		public ApiCategoryAdapter(Context context) {
@@ -66,6 +79,9 @@ public class ListCategoriesActivity extends ActionBarActivity implements OnItemC
 			Pref.clearAll(this);
 			Toast.makeText(this, R.string.logged_out, Toast.LENGTH_SHORT).show();
 			finish();
+			return true;
+		} else if (id == R.id.action_settings) {
+			startActivity(new Intent(this, SettingsActivity.class));
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -38,7 +38,7 @@ public enum ApiSpecHelper {
 	SINGLETON;
 
 	private static final String TAG = "ApiSpecHlp";
-	private static final String JSON_URL = "http://levi-at-idean.github.io/dist/data/specifications.json";
+	private static final String JSON_URL = "http://ericsson-innovate.github.io/hackathon-portal/dist/data/specifications.json";
 
 	private Map<ApiCategory, List<ApiSpec>> mCat2Specs = new HashMap<ApiCategory, List<ApiSpec>>();
 
@@ -48,12 +48,18 @@ public enum ApiSpecHelper {
 	public void loadSpecs(Context context) {
 		Log.d(TAG,"loadSpecs");
 		if (mCat2Specs.isEmpty()) {
+			Log.d(TAG,"Loading specs from the server");
 			loadApiSpecFromRemoteJson(context);
 		}
 	}
 
 	public List<ApiSpec> getSpecs(ApiCategory category) {
-		return mCat2Specs.get(category);
+		Log.d(TAG,"Get specs for category " + category);
+		List<ApiSpec> res = mCat2Specs.get(category);
+		if (res == null) {
+			return new ArrayList<ApiSpec>();
+		}
+		return res;
 	}
 
 	/**
@@ -78,6 +84,12 @@ public enum ApiSpecHelper {
 		return getAnnotation(spec) != null;
 	}
 
+
+	public boolean isRequireCheckStatus(ApiSpec spec) {
+		ApiName name = getAnnotation(spec);
+		Log.d(TAG,"Got api name " + name.value() + " : " + name.isRequireStatusCheck());
+		return name != null && name.isRequireStatusCheck();
+	}
 	public Result executeApi(ApiSpec spec, RequestHelper helper, Bundle params) {
 		Class<RequestHelper> parent = RequestHelper.class;
 		for (Method method : parent.getDeclaredMethods()) {

@@ -5,21 +5,28 @@ import android.preference.PreferenceManager;
 
 public enum Pref {
 
-	USERNAME,
-	PASSWORD,
-	PIN,
-	VIN;
+	USERNAME("pref_username"),
+	PASSWORD("pref_password"),
+	PIN("pref_pin"),
+	VIN("pref_vin"),
+	SERVER("pref_server");
+	
+	
+	public String key;
+	private Pref(String key) {
+		this.key = key;
+	}
 	
 	public boolean contains(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).contains(name());
+		return PreferenceManager.getDefaultSharedPreferences(context).contains(key);
 	}
 	
 	public String get(Context context) {
-		return PreferenceManager.getDefaultSharedPreferences(context).getString(name(), null);
+		return PreferenceManager.getDefaultSharedPreferences(context).getString(key, null);
 	}
 	
 	public void set(Context context, String val) {
-		PreferenceManager.getDefaultSharedPreferences(context).edit().putString(name(), val).commit();
+		PreferenceManager.getDefaultSharedPreferences(context).edit().putString(key, val).commit();
 	}
 
 	public static void clearAll(Context context) {

@@ -31,7 +31,7 @@ import com.idean.atthack.api.Param;
  */
 public class RequestHelper {
 	//private final static String BASE = "http://asdp-emulator-env-rtfnw3u24d.elasticbeanstalk.com/";
-	private final static String BASE = "http://lightning.att.io:3000/";
+	private final static String DEFAULT_FALLBACK_BASE = "http://lightning.att.io:3000/";
 	private static final String TAG = "ReqHlp";
 	private Context mContext;
 
@@ -44,11 +44,21 @@ public class RequestHelper {
 		
 		Log.d(TAG,"Found username " + Pref.USERNAME.get(context)
 				 + "Pin " + Pref.PIN.get(context));
-
+	}
+	
+	private String getUrlBase() {
+		String base = Pref.SERVER.get(mContext);
+		if (TextUtils.isEmpty(base)) {
+			return DEFAULT_FALLBACK_BASE;
+		}
+		if (!base.endsWith("/")) {
+			return base + "/";
+		}
+		return base;
 	}
 
 	// ## START 2.6.4-login
-	@ApiName("2.6.4-login")
+	@ApiName(value="2.6.4-login", isRequireStatusCheck=false)
 	public Result login(Bundle params) {
 		String username = params.getString(Param.USERNAME.name());
 		String vin = params.getString(Param.VIN.name());
@@ -59,7 +69,7 @@ public class RequestHelper {
 
 		HttpURLConnection conn = null;
 		try {
-			URL url = new URL(BASE + "remoteservices/v1/vehicle/login/" + vin);
+			URL url = new URL(getUrlBase() + "remoteservices/v1/vehicle/login/" + vin);
 
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(HttpVerb.POST.name());
@@ -88,13 +98,13 @@ public class RequestHelper {
 	// ## START 2.6.2-validate-otp
 	// ## START 2.6.3-set-pin
 	// ## START 2.6.5-door-unlock
-	@ApiName("2.6.5-door-unlock")
+	@ApiName(value="2.6.5-door-unlock", isRequireStatusCheck=true)
 	public Result unlockDoor(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/unlock/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/unlock/" + Pref.VIN.get(mContext);
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.1-sign-up
@@ -103,82 +113,88 @@ public class RequestHelper {
 	// ## END 2.6.5-door-unlock
 
 	// ## START 2.6.6-door-lock
-	@ApiName("2.6.6-door-lock")
+	@ApiName(value="2.6.6-door-lock", isRequireStatusCheck=true)
 	 public Result lockDoor(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/lock/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/lock/" + Pref.VIN.get(mContext);
 		
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.6-door-lock
 
 	// ## START 2.6.7-engine-on
-	@ApiName("2.6.7-engine-on")
+	@ApiName(value="2.6.7-engine-on", isRequireStatusCheck=true)
 	public Result engineOn(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/engineOn/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/engineOn/" + Pref.VIN.get(mContext);
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.7-engine-on
 	
 	// ## START 2.6.8-engine-off
- 	@ApiName("2.6.8-engine-off")
+ 	@ApiName(value="2.6.8-engine-off", isRequireStatusCheck=false)
 	public Result engineOff(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/engineOff/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/engineOff/" + Pref.VIN.get(mContext);
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.8-engine-off
  	
 	
 	// ## START 2.6.9-honk-and-blink
-	@ApiName("2.6.9-honk-and-blink")
+	@ApiName(value="2.6.9-honk-and-blink", isRequireStatusCheck=true)
 	public Result honkAndBlink(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/honkBlink/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/honkBlink/" + Pref.VIN.get(mContext);
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.9-honk-and-blink
 
 	// ## START 2.6.10-check-request-status
 	// ## START 2.6.11-view-diagnostic-data	
-	@ApiName("2.6.11-view-diagnostic-data")
+	@ApiName(value="2.6.11-view-diagnostic-data", isRequireStatusCheck=true)
 	public Result getDiagnosticData(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/diagnostics/view/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/diagnostics/view/" + Pref.VIN.get(mContext);
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.10-check-request-status
 	// ## END 2.6.11-view-diagnostic-data
 	
 	// ## START 2.6.12-get-vehicle-status	
-	@ApiName("2.6.12-get-vehicle-status")
+	@ApiName(value="2.6.12-get-vehicle-status", isRequireStatusCheck=true)
 	public Result getVehicleStatus(Bundle params) {
 		JsonObject obj = new JsonObject();
 		Param.LATITUDE.addToJson(obj, params);
 		Param.LONGITUDE.addToJson(obj, params);
 		Param.ACCURACY.addToJson(obj, params);
-		String urlStr = BASE + "remoteservices/v1/vehicle/status/view/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/status/view/" + Pref.VIN.get(mContext);
 		
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.6.12-get-vehicle-status
 
+	
+	public Result checkRequestStatus(String requestId) {
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/status/" + Pref.VIN.get(mContext)
+				+ "/" + requestId; 
+		return sendHttpGet(urlStr);
+	}
 	
 	// ## START COMMON
 	/**
@@ -207,6 +223,27 @@ public class RequestHelper {
 		}
 	}
 
+	private Result sendHttpGet(String urlStr) {
+		HttpURLConnection conn = null;
+		try {
+			URL url = new URL(urlStr);
+			conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod(HttpVerb.GET.name());
+			setBasicAuth(conn);
+			conn.connect();
+			Log.d(TAG,"[" + conn.getRequestMethod() + "] to " + url.toString());
+
+			String body = readStream(conn.getInputStream());
+			return new Result(conn.getResponseCode(), body);
+		} catch (IOException e) {
+			return new Result(e.getClass() + ": " + e.getMessage());
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
+		}
+	}
+	
 
 	private void writeBody(HttpURLConnection urlConnection, JsonObject obj) {
 		try {
@@ -254,6 +291,6 @@ public class RequestHelper {
 			}
 		}
 	}
-	// END COMMON
+	// ## END COMMON
 
 }
