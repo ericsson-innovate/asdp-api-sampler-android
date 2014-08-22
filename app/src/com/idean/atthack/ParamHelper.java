@@ -4,10 +4,12 @@ import android.app.Service;
 import android.content.Context;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ public enum ParamHelper {
 				param.required ? View.VISIBLE : View.GONE);
 
 		EditText edit = (EditText) v.findViewById(R.id.param_val);
+		edit.setImeOptions(EditorInfo.IME_ACTION_NEXT);
 		switch (param.type()) {
 		case STRING:
 			edit.setRawInputType(InputType.TYPE_CLASS_TEXT);
@@ -47,6 +50,12 @@ public enum ParamHelper {
 		default:
 			break;
 		}
+		
+		if (!TextUtils.isEmpty(param.defaultVal)) {
+			// insert the default val into the EditText
+			edit.setText(param.defaultVal);
+		}
+		
 		return v;
 	}
 

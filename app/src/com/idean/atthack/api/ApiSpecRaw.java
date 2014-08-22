@@ -36,17 +36,19 @@ public class ApiSpecRaw {
 	}
 
 	public static class ReqParam {
+		private static final String TAG = "ReqParam";
 		private String key;
 		private String type;
 		public boolean required;
 		public String description;
+		public String defaultVal;
 
 		public Param key() {
 			if (TextUtils.isEmpty(key)) {
 				return null;
 			}
 			try {
-				return Param.valueOf(key.toUpperCase());
+				return Param.valueOf(key);
 			} catch (Exception e) {
 				return null;
 			}
@@ -73,6 +75,10 @@ public class ApiSpecRaw {
 				return Type.UNKNOWN;
 			}
 			return Type.UNKNOWN;
+		}
+
+		public boolean isValid() {
+			return key() != null;
 		}
 	}
 

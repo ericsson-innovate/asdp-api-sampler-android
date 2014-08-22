@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -46,15 +47,16 @@ public enum ApiSpecHelper {
 	 * Must not be done on the UI thread
 	 */
 	public void loadSpecs(Context context) {
-		Log.d(TAG,"loadSpecs");
+		Log.d(TAG, "loadSpecs");
 		if (mCat2Specs.isEmpty()) {
-			Log.d(TAG,"Loading specs from the server");
-			loadApiSpecFromRemoteJson(context);
+			Log.d(TAG, "Loading specs from the server");
+			//loadApiSpecFromRemoteJson(context);
+			loadApiSpecFromLocalJson(context);
 		}
 	}
 
 	public List<ApiSpec> getSpecs(ApiCategory category) {
-		Log.d(TAG,"Get specs for category " + category);
+		Log.d(TAG, "Get specs for category " + category);
 		List<ApiSpec> res = mCat2Specs.get(category);
 		if (res == null) {
 			return new ArrayList<ApiSpec>();
@@ -84,12 +86,14 @@ public enum ApiSpecHelper {
 		return getAnnotation(spec) != null;
 	}
 
-
 	public boolean isRequireCheckStatus(ApiSpec spec) {
 		ApiName name = getAnnotation(spec);
-		Log.d(TAG,"Got api name " + name.value() + " : " + name.isRequireStatusCheck());
+		Log.d(TAG,
+				"Got api name " + name.value() + " : "
+						+ name.isRequireStatusCheck());
 		return name != null && name.isRequireStatusCheck();
 	}
+
 	public Result executeApi(ApiSpec spec, RequestHelper helper, Bundle params) {
 		Class<RequestHelper> parent = RequestHelper.class;
 		for (Method method : parent.getDeclaredMethods()) {
@@ -122,18 +126,40 @@ public enum ApiSpecHelper {
 		return null;
 	}
 
+	private void loadApiSpecFromLocalJson(Context context) {
+		AssetManager mgr = context.getAssets();
+		InputStreamReader reader;
+		try {
+			reader = new InputStreamReader(mgr.open("specifications.json"));
+			loadApiSpecFromInputStream(reader);
+		} catch (IOException e) {
+			Log.w(TAG, "Unable to open local asset", e);
+		}
+	}
+
 	private void loadApiSpecFromRemoteJson(Context context) {
 		HttpURLConnection conn = null;
-		Gson gson = new Gson();
-		InputStreamReader reader = null;
-
 		try {
 			URL url = new URL(JSON_URL);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(HttpVerb.GET.name());
 			conn.connect();
+			InputStreamReader reader = new InputStreamReader(
+					conn.getInputStream());
+			loadApiSpecFromInputStream(reader);
+		} catch (Exception e) {
+			Log.w(TAG, "Unable to get remote API spec", e);
+		} finally {
+			if (conn != null) {
+				conn.disconnect();
+			}
+		}
+	}
 
-			reader = new InputStreamReader(conn.getInputStream());
+	private void loadApiSpecFromInputStream(InputStreamReader reader) {
+		Gson gson = new Gson();
+
+		try {
 			ApiSpecRaw[] specs = gson.fromJson(reader, ApiSpecRaw[].class);
 			if (specs != null && specs.length > 0) {
 				Log.d(TAG, "Got " + specs.length
@@ -156,14 +182,14 @@ public enum ApiSpecHelper {
 						}
 						res.add(spec);
 					} else {
-						Log.w(TAG,"Skipping invalid spec, " + spec.id);
+						Log.w(TAG, "Skipping invalid spec, " + spec.id);
 					}
 				}
 			}
 			for (ApiCategory cat : ApiCategory.values()) {
 				List<ApiSpec> res = mCat2Specs.get(cat);
-				Log.d(TAG, "For category " + cat + ", got " + ((res != null) ? res.size() : "0")
-						+ " API specs");
+				Log.d(TAG, "For category " + cat + ", got "
+						+ ((res != null) ? res.size() : "0") + " API specs");
 			}
 
 		} catch (Exception e) {
@@ -175,17 +201,13 @@ public enum ApiSpecHelper {
 				} catch (IOException e) {
 				}
 			}
-			if (conn != null) {
-				conn.disconnect();
-			}
 		}
 		Log.d(TAG, "Loaded " + mCat2Specs.size() + " API categories");
-
 	}
 
 	public enum ApiCategory {
 		KNOW_DRIVER("know-driver", "Know Driver"), KNOW_CAR("know-car",
-				"Know Car"), CONTROL_CAR("control-car", "Control Car");
+				"Know Car"), CONTROL_CAR("control-car", "Control Car"), INTERNAL("internal","[Internal]");
 
 		public String machineName;
 		public String displayName;
@@ -202,17 +224,18 @@ public enum ApiSpecHelper {
 						return category;
 					}
 				}
-				Log.w(TAG,"None of the spec categories were recognized: " + spec.id);
+				Log.w(TAG, "None of the spec categories were recognized: "
+						+ spec.id);
 				return null;
 			} else {
-				Log.w(TAG,"Spec doesn't have any categories: " + spec.id);
+				Log.w(TAG, "Spec doesn't have any categories: " + spec.id);
 				return null;
 			}
 		}
 
 		private static ApiCategory fromMachineName(String cat) {
 			// Not most efficient, but readable
-			for (ApiCategory category:values()) {
+			for (ApiCategory category : values()) {
 				if (category.machineName.equals(cat)) {
 					return category;
 				}

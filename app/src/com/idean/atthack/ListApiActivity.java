@@ -105,8 +105,8 @@ public class ListApiActivity extends ActionBarActivity implements OnItemClickLis
 			return;
 		}
 		
-		Intent i = new Intent(this, ExecApiActivity.class);
-		i.putExtra(ExecApiActivity.EXTRA_SPECID, spec.id);
+		Intent i = new Intent(this, EditReqActivity.class);
+		i.putExtra(EditReqActivity.EXTRA_SPECID, spec.id);
 		startActivity(i);
 	}
 }

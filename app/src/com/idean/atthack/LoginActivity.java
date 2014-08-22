@@ -112,9 +112,9 @@ public class LoginActivity extends Activity {
 			RequestHelper h = new RequestHelper(LoginActivity.this);	
 				
 			Bundle param = new Bundle();
-			param.putString(Param.USERNAME.name(), mUsernameView.getText().toString());
-			param.putString(Param.PIN.name(), mPinView.getText().toString());
-			param.putString(Param.VIN.name(), mVinView.getText().toString());
+			param.putString(Param.username.name(), mUsernameView.getText().toString());
+			param.putString(Param.pin.name(), mPinView.getText().toString());
+			param.putString(Param.vin.name(), mVinView.getText().toString());
 			Result result = h.login(param);
 			return result.isSuccess();
 		}
@@ -137,7 +137,11 @@ public class LoginActivity extends Activity {
 				Pref.USERNAME.set(LoginActivity.this, user);
 				Pref.PIN.set(LoginActivity.this, pin);
 				Pref.VIN.set(LoginActivity.this, vin);
-				Pref.SERVER.set(LoginActivity.this, Pref.SERVER.get(LoginActivity.this));
+				String base = Pref.SERVER.get(LoginActivity.this);
+				if (TextUtils.isEmpty(base)) {
+					base = RequestHelper.DEFAULT_FALLBACK_BASE;
+				}
+				Pref.SERVER.set(LoginActivity.this, base);
 				
 				Log.d(TAG,"Stored username " + Pref.USERNAME.get(LoginActivity.this)
 						 + "Pin " + Pref.PIN.get(LoginActivity.this) + ", Server " + Pref.SERVER.get(LoginActivity.this));

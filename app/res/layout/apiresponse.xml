@@ -21,53 +21,35 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/dialog_full_holo_light"
+            android:layout_margin="4dp"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/resp_check_status"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:ellipsize="end"
-                android:maxLines="4"
-                android:text="@android:string/unknownName"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textSize="10sp" />
-        </LinearLayout>
+                android:orientation="vertical" >
 
-        <LinearLayout
-            android:id="@+id/requestParent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical" >
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="To obtain the API result, this API requires an additional call to &quot;check-request-status&quot;."
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textStyle="italic" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/request"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/request_empty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="No parameters needed by this API"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical" >
+                <Button
+                    android:id="@+id/response_button"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Get Request Status" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:text="@string/response"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textStyle="bold" />
@@ -98,26 +80,8 @@
             <TextView
                 android:id="@+id/response_body"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                 >
- 
+                android:layout_height="wrap_content" >
             </TextView>
-
-            <Button
-                android:id="@+id/response_button"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Get Response Result" />
-
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="6dp"
-                android:text="To obtain the API result, this API requires an additional call to &quot;check-request-status&quot;."
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:textStyle="italic" />
         </LinearLayout>
     </LinearLayout>
 
