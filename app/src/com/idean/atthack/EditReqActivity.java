@@ -1,6 +1,7 @@
 package com.idean.atthack;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -54,7 +55,7 @@ public class EditReqActivity extends ActionBarActivity {
 
 		// bind request params
 		bindRequestParams(mSpec, mParam2Field);
-		final ScrollView scroll = (ScrollView)findViewById(R.id.requestScroll);
+		final ScrollView scroll = (ScrollView) findViewById(R.id.requestScroll);
 		scroll.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -66,28 +67,77 @@ public class EditReqActivity extends ActionBarActivity {
 	private void bindRequestParams(ApiSpec spec,
 			Map<Param, EditText> param2Field) {
 		ReqParam[] params = spec.requestParams();
-		if (params == null) {
+		List<String> routeParams = spec.routeParams();
+		if (params == null && routeParams.size() == 0) {
 			findViewById(R.id.request_empty).setVisibility(View.VISIBLE);
 			return;
 		}
 		findViewById(R.id.request_empty).setVisibility(View.GONE);
-		ViewGroup parent = (ViewGroup) findViewById(R.id.requestParent);
-		for (ReqParam param : params) {
-			if (!param.isValid()) {
-				Log.w(TAG,"Skipping invalid param " + param.description);
-				continue;
-			}
-			View view = ParamHelper.SINGLETON.createParamWidget(this, param);
-			ParamHelper.SINGLETON.addWidget(view, parent);
 
-			// Map param key to the editText that contains the value of the
-			// parameter we're sending
-			EditText edit = (EditText) view.findViewById(R.id.param_val);
-			Param paramKey = param.key();
-			if (edit != null && paramKey != null) {
-				param2Field.put(paramKey, edit);
+		ViewGroup parent = (ViewGroup) findViewById(R.id.requestParent);
+
+		// Bind the route parameters
+
+		Log.d(TAG, "Got routeParams " + routeParams);
+		if (routeParams != null && routeParams.size() > 0) {
+			for (String routeParam : routeParams) {
+				Param param = null;
+				try {
+					param = Param.valueOf(routeParam);
+				} catch (Exception e) {
+					param = null;
+				}
+				if (param == null) {
+					Log.w(TAG, "Unable to process param " + routeParam
+							+ ". Skipping");
+					continue;
+				}
+				View view = ParamHelper.SINGLETON.createRouteParamWidget(this,
+						param, routeParam);
+				ParamHelper.SINGLETON.addWidget(view, parent);
+
+				// Map param key to the editText that contains the value of the
+				// parameter we're sending
+				EditText edit = (EditText) view.findViewById(R.id.param_val);
+				// For VIN, set the stored value as the default value for the field
+				handleSetVinDefaultValue(edit, param);
+		
+				if (edit != null) {
+					param2Field.put(param, edit);
+				}
 			}
 		}
+
+		if (params != null) {
+			for (ReqParam param : params) {
+				if (!param.isValid() || param2Field.containsKey(param.key())) {
+					Log.w(TAG, "Skipping invalid param " + param.description
+							+ ". Or skipping b/c key already has been set");
+					continue;
+				}
+				View view = ParamHelper.SINGLETON
+						.createParamWidget(this, param);
+				ParamHelper.SINGLETON.addWidget(view, parent);
+
+				// Map param key to the editText that contains the value of the
+				// parameter we're sending
+				EditText edit = (EditText) view.findViewById(R.id.param_val);
+				Param paramKey = param.key();
+				
+				// For VIN, set the stored value as the default value for the field
+				handleSetVinDefaultValue(edit, paramKey);
+				if (edit != null && paramKey != null) {
+					param2Field.put(paramKey, edit);
+				}
+			}
+		}
+	}
+
+	private void handleSetVinDefaultValue(EditText edit, Param paramKey) {
+		if (paramKey.equals(Param.vin)) {
+			edit.setText(Pref.VIN.get(this));
+		}
+		
 	}
 
 	@Override
@@ -107,9 +157,9 @@ public class EditReqActivity extends ActionBarActivity {
 			new GatherRequestTask().execute(null, null, null);
 			return true;
 		} else if (id == android.R.id.home) {
-	        NavUtils.navigateUpFromSameTask(this);
-	        return true;
-	    }
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 

@@ -108,7 +108,7 @@ public class RequestHelper {
 		Param.longitude.addToJson(obj, params);
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/unlock/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 		return sendHttpPost(obj, urlStr);
 	}
 
@@ -125,7 +125,7 @@ public class RequestHelper {
 		Param.longitude.addToJson(obj, params);
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/lock/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 
 		return sendHttpPost(obj, urlStr);
 	}
@@ -140,7 +140,7 @@ public class RequestHelper {
 		Param.longitude.addToJson(obj, params);
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/engineOn/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 		return sendHttpPost(obj, urlStr);
 	}
 
@@ -154,7 +154,7 @@ public class RequestHelper {
 		Param.longitude.addToJson(obj, params);
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/engineOff/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 		return sendHttpPost(obj, urlStr);
 	}
 
@@ -168,7 +168,7 @@ public class RequestHelper {
 		Param.longitude.addToJson(obj, params);
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/honkBlink/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 		return sendHttpPost(obj, urlStr);
 	}
 
@@ -184,7 +184,7 @@ public class RequestHelper {
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase()
 				+ "remoteservices/v1/vehicle/diagnostics/view/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 		return sendHttpPost(obj, urlStr);
 	}
 
@@ -199,7 +199,7 @@ public class RequestHelper {
 		Param.longitude.addToJson(obj, params);
 		Param.accuracy.addToJson(obj, params);
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/status/view/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params);
 
 		return sendHttpPost(obj, urlStr);
 	}
@@ -279,7 +279,8 @@ public class RequestHelper {
 		Param.users.addToJsonAsObject(obj, params);
 		Param.custom.addToJsonAsObject(obj, params);
 		Param.metas.addToJsonAsObject(obj, params);
-		String urlStr = getUrlBase() + "vehicles/v1/vehicle/update/" + Pref.VIN.get(mContext);
+		String urlStr = getUrlBase() + "vehicles/v1/vehicle/update/"
+				+ Param.vin.getAsString(params); 
 		return sendHttpPost(obj, urlStr);
 	}
 
@@ -291,7 +292,7 @@ public class RequestHelper {
 	public Result deleteVehicle(Bundle params) {
 		JSONObject obj = new JSONObject();
 		String urlStr = getUrlBase() + "vehicles/v1/vehicle/delete/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params); 
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.16.3-delete-a-vehicle
@@ -301,7 +302,7 @@ public class RequestHelper {
 	@ApiName(value = "2.16.4-view-a-vehicle", isRequireStatusCheck = false)
 	public Result viewVehicle(Bundle params) {
 		String urlStr = getUrlBase() + "vehicles/v1/vehicle/view/"
-				+ Pref.VIN.get(mContext);
+				+ Param.vin.getAsString(params); 
 		return sendHttpGet(urlStr);
 	}
 	// ## END 2.16.4-view-a-vehicle
@@ -339,7 +340,7 @@ public class RequestHelper {
 		Param.startNum.addToJson(obj, params);
 		Param.pageSize.addToJson(obj, params);
 		Param.sortItem.addToJsonAsObject(obj, params);		
-		String urlStr = getUrlBase() + "vehicles/v1/users/search";
+		String urlStr = getUrlBase() + "vehicles/v1/vehicle/search";
 		return sendHttpPost(obj, urlStr);
 	}
 	// ## END 2.16.7-search-vehicles
@@ -414,6 +415,7 @@ public class RequestHelper {
 			PrintWriter writer = new PrintWriter(new BufferedOutputStream(
 					urlConnection.getOutputStream()));
 			writer.print(body); // presumably in UTF-8
+			writer.flush();
 			Log.d(TAG, "Wrote request body: \n\n" + body);
 		} catch (Exception e) {
 			Log.w(TAG, "Unable to send request body", e);
@@ -425,6 +427,7 @@ public class RequestHelper {
 				+ Pref.PIN.get(mContext);
 		String encoded = Base64.encodeToString(auth.getBytes(), Base64.DEFAULT);
 		conn.setRequestProperty("Authorization", "Basic " + encoded);
+		conn.setRequestProperty("APIKey", "random1234");
 	}
 
 	public static String readStream(InputStream in) {

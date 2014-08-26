@@ -15,7 +15,7 @@ public class Result {
 		if (!TextUtils.isEmpty(message)) {
 			return message;
 		}
-		if (statusCode != 200) {
+		if (!isSuccess()) {
 			return "API request failed";
 		} else {
 			return "API request succeeded";

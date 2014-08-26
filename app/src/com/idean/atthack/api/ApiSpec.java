@@ -1,8 +1,14 @@
 package com.idean.atthack.api;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.idean.atthack.api.ApiSpecRaw.ReqParam;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 public class ApiSpec {
 	private ApiSpecRaw mRaw;
@@ -19,6 +25,35 @@ public class ApiSpec {
 			return mRaw.resourceTable.route;
 		}
 		return null;
+	}
+	
+	private static final String REGEX_CURLY = "\\{(\\w*)\\}";
+
+	private static final String TAG = "ApiSpec";
+
+
+	/**
+	 * 
+	 * @return List of params embedded in the URL route
+	 */
+	public List<String> routeParams() {
+		String route= route();
+		if (TextUtils.isEmpty(route)) {
+			return new ArrayList<String>();
+		}
+
+		Pattern PATTERN_CURL = Pattern.compile(REGEX_CURLY);
+		Matcher m = PATTERN_CURL.matcher(route);
+		List<String> res = new ArrayList<String>();
+		while (m.find()) {
+			String next = m.group(1);
+			Log.d(TAG,"Found next " + next);
+			if (!TextUtils.isEmpty(next)) {
+				res.add(next);
+			}
+		}
+		Log.d(TAG,"Extracting route params from " + route + " and got " + res);
+		return res;
 	}
 	
 	public HttpVerb verb() {

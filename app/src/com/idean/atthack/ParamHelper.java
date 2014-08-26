@@ -15,9 +15,27 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.idean.atthack.api.ApiSpecRaw.ReqParam;
+import com.idean.atthack.api.Param;
 
 public enum ParamHelper {
 	SINGLETON;
+	
+	public View createRouteParamWidget(Context context, Param param, String routeParam) {
+		LayoutInflater inf = (LayoutInflater) context
+				.getSystemService(Service.LAYOUT_INFLATER_SERVICE);
+		View v = inf.inflate(R.layout.request_param, null);
+		((TextView) v.findViewById(R.id.param_name))
+				.setText(param.name());
+		((TextView) v.findViewById(R.id.param_description))
+			.setText("This is a parameter set in the URL");
+
+		v.findViewById(R.id.param_required).setVisibility(View.VISIBLE);
+
+		EditText edit = (EditText) v.findViewById(R.id.param_val);
+		edit.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+		edit.setRawInputType(InputType.TYPE_CLASS_TEXT); 
+		return v;
+	}
 
 	public View createParamWidget(Context context, ReqParam param) {
 		LayoutInflater inf = (LayoutInflater) context

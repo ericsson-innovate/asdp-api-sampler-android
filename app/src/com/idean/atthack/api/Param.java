@@ -115,6 +115,10 @@ public enum Param {
 			}
 		}
 	}
+	
+	public String getAsString(Bundle params) {
+		return params.getString(name());
+	}
 
 	public void addToJsonAsObject(JSONObject parent, Bundle params) {
 		String defaultVal = params.getString(name());
