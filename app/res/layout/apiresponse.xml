@@ -77,11 +77,11 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="@android:color/darker_gray" />
 
-            <TextView
+            <EditText
                 android:id="@+id/response_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
-            </TextView>
+            </EditText>
         </LinearLayout>
     </LinearLayout>
 

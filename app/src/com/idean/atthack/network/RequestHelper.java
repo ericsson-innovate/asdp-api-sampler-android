@@ -347,6 +347,119 @@ public class RequestHelper {
 
 	
 
+	// ## START 2.13.1-add-a-subscriber
+	@ApiName(value = "2.13.1-add-a-subscriber", isRequireStatusCheck = false)
+	public Result addSubscriber(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.uid.addToJson(obj, params);
+		Param.firstName.addToJson(obj, params);
+		Param.lastName.addToJson(obj, params);
+		Param.middleName.addToJson(obj, params);
+		Param.namePrefix.addToJson(obj, params);
+		Param.picture.addToJson(obj, params);
+		Param.dob.addToJson(obj, params);
+		Param.company.addToJson(obj, params);
+		Param.address.addToJsonAsObject(obj, params);
+		Param.defaultAddress.addToJson(obj, params);
+		Param.phone.addToJsonAsObject(obj, params);
+		Param.defaultPhone.addToJson(obj, params);
+		Param.email.addToJsonAsObject(obj, params);
+		Param.defaultEmail.addToJson(obj, params);
+		Param.vehicles.addToJsonAsObject(obj, params);
+		Param.custom.addToJsonAsObject(obj, params);
+		Param.metas.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "subscribers/v1/subscriber/add";
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.13.1-add-a-subscriber
+	
+	// ## START 2.13.2-add-a-subscriber-and-vehicle
+	@ApiName(value = "2.13.2-add-a-subscriber-and-vehicle", isRequireStatusCheck = false)
+	public Result addSubscriberAndVehicle(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.uid.addToJson(obj, params);
+		Param.firstName.addToJson(obj, params);
+		Param.lastName.addToJson(obj, params);
+		Param.middleName.addToJson(obj, params);
+		Param.namePrefix.addToJson(obj, params);
+		Param.picture.addToJson(obj, params);
+		Param.dob.addToJson(obj, params);
+		Param.company.addToJson(obj, params);
+		Param.address.addToJsonAsObject(obj, params);
+		Param.defaultAddress.addToJson(obj, params);
+		Param.phone.addToJsonAsObject(obj, params);
+		Param.defaultPhone.addToJson(obj, params);
+		Param.email.addToJsonAsObject(obj, params);
+		Param.defaultEmail.addToJson(obj, params);
+		Param.vehicle.addToJsonAsObject(obj, params);
+		Param.custom.addToJsonAsObject(obj, params);
+		Param.metas.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "subscribers/v1/subscriber-vehicle/add";
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.13.2-add-a-subscriber-and-vehicle
+	
+
+	// ## START 2.13.3-update-a-subscriber
+	@ApiName(value = "2.13.3-update-a-subscriber", isRequireStatusCheck = false)
+	public Result updateSubscriber(Bundle params) {
+		JSONObject obj = new JSONObject();
+
+		Param.uid.addToJson(obj, params);		
+		Param.pin.addToJson(obj, params);
+		Param.firstName.addToJson(obj, params);
+		Param.lastName.addToJson(obj, params);
+		Param.middleName.addToJson(obj, params);
+		Param.namePrefix.addToJson(obj, params);
+		Param.picture.addToJson(obj, params);
+		Param.dob.addToJson(obj, params);
+		Param.company.addToJson(obj, params);
+		Param.address.addToJsonAsObject(obj, params);
+		Param.defaultAddress.addToJson(obj, params);
+		Param.phone.addToJsonAsObject(obj, params);
+		Param.defaultPhone.addToJson(obj, params);
+		Param.email.addToJsonAsObject(obj, params);
+		Param.defaultEmail.addToJson(obj, params);
+		Param.vehicle.addToJsonAsObject(obj, params);
+		Param.custom.addToJsonAsObject(obj, params);
+		Param.metas.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "subscribers/v1/subscriber/update/" + Param.id.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.13.3-update-a-subscriber
+	
+	// ## START 2.13.4-delete-a-subscriber
+	@ApiName(value = "2.13.4-delete-a-subscriber", isRequireStatusCheck = false)
+	public Result deleteSubscriber(Bundle params) {
+		JSONObject obj = new JSONObject();
+		String urlStr = getUrlBase() + "subscribers/v1/subscriber/delete/" + Param.id.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.13.4-delete-a-subscriber
+
+	// ## START 2.13.5-view-a-subscriber
+	@ApiName(value = "2.13.5-view-a-subscriber", isRequireStatusCheck = false)
+	public Result viewSubscriber(Bundle params) {
+		String urlStr = getUrlBase() + "subscribers/v1/subscriber/view/"
+				+ Param.id.getAsString(params); 
+		return sendHttpGet(urlStr);
+	}
+	// ## END 2.13.5-view-a-subscriber
+
+	
+	// ## START 2.13.6-search-subscribers
+	@ApiName(value = "2.13.6-search-subscribers", isRequireStatusCheck = false)
+	public Result searchSubscribers(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.query.addToJson(obj, params);
+		Param.startNum.addToJson(obj, params);
+		Param.pageSize.addToJson(obj, params);
+		Param.sortItem.addToJsonAsObject(obj, params);		
+		String urlStr = getUrlBase() + "subscribers/v1/subscriber/search";
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.13.6-search-subscribers
+	
 	// Disabled in the UI
 	public Result checkRequestStatus(String requestId) {
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/status/"

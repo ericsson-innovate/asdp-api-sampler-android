@@ -27,10 +27,18 @@ public enum Param {
 			Type.STRING), interiorColor(Type.STRING), exteriorColor(Type.STRING), transmissionType(
 			Type.STRING), weight(Type.STRING), category(Type.STRING), options(
 			Type.STRING), owner(Type.STRING), ownerType(Type.STRING), users(
-			Type.STRING), custom(Type.STRING), metas(Type.STRING),
+			Type.STRING),
+
+	custom(Type.STRING), metas(Type.STRING),
 
 	query(Type.STRING), startNum(Type.INTEGER), pageSize(Type.INTEGER), sortItem(
-			Type.STRING);
+			Type.STRING),
+
+	uid(Type.STRING), firstName(Type.STRING), lastName(Type.STRING), middleName(
+			Type.STRING), namePrefix(Type.STRING), picture(Type.STRING), dob(
+			Type.STRING), company(Type.STRING), address(Type.STRING), defaultAddress(
+			Type.INTEGER), phone(Type.STRING), defaultPhone(Type.INTEGER), email(
+			Type.STRING), defaultEmail(Type.INTEGER), vehicles(Type.STRING), vehicle(Type.STRING), id(Type.STRING);
 
 	public Type type;
 
@@ -115,7 +123,7 @@ public enum Param {
 			}
 		}
 	}
-	
+
 	public String getAsString(Bundle params) {
 		return params.getString(name());
 	}

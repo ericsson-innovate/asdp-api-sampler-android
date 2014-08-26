@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +31,7 @@ public class ViewRespActivity extends ActionBarActivity {
 	private ProgressBar mProgress;
 	private ApiSpec mSpec;
 
-	private TextView mResponseBody;
+	private EditText mResponseBody;
 	private TextView mResponseStatus;
 	private RequestHelper mRequestHelper;
 	private View mCheckStatusParent;
@@ -54,7 +55,7 @@ public class ViewRespActivity extends ActionBarActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		mProgress = (ProgressBar) findViewById(R.id.progress);
-		mResponseBody = (TextView) findViewById(R.id.response_body);
+		mResponseBody = (EditText) findViewById(R.id.response_body);
 		mResponseStatus = (TextView) findViewById(R.id.response_status);
 		mCheckStatusParent = findViewById(R.id.resp_check_status);
 		mRequestHelper = new RequestHelper(this);

@@ -50,8 +50,8 @@ public enum ApiSpecHelper {
 		Log.d(TAG, "loadSpecs");
 		if (mCat2Specs.isEmpty()) {
 			Log.d(TAG, "Loading specs from the server");
-			//loadApiSpecFromRemoteJson(context);
-			loadApiSpecFromLocalJson(context);
+			loadApiSpecFromRemoteJson(context);
+			//loadApiSpecFromLocalJson(context);
 		}
 	}
 
