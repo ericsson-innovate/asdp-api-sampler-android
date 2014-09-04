@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -38,7 +35,9 @@ public enum Param {
 			Type.STRING), namePrefix(Type.STRING), picture(Type.STRING), dob(
 			Type.STRING), company(Type.STRING), address(Type.STRING), defaultAddress(
 			Type.INTEGER), phone(Type.STRING), defaultPhone(Type.INTEGER), email(
-			Type.STRING), defaultEmail(Type.INTEGER), vehicles(Type.STRING), vehicle(Type.STRING), id(Type.STRING);
+			Type.STRING), defaultEmail(Type.INTEGER), vehicles(Type.STRING), vehicle(Type.STRING), id(Type.STRING), 
+			
+			userURI(Type.STRING), appId(Type.STRING), parameters(Type.STRING);
 
 	public Type type;
 

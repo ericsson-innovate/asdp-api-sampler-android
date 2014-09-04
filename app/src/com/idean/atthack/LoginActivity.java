@@ -56,6 +56,19 @@ public class LoginActivity extends Activity {
 		});
 	}
 
+	public void onSkipLogin(View view) {
+		Log.d(TAG,"Skipping login");
+		Pref.USERNAME.set(LoginActivity.this, RequestHelper.DEFAULT_USERNAME);
+		Pref.PIN.set(LoginActivity.this, RequestHelper.DEFAULT_PASSWORD);
+		Pref.VIN.set(LoginActivity.this, RequestHelper.DEFAULT_VIN);
+		String base = Pref.SERVER.get(LoginActivity.this);
+		if (TextUtils.isEmpty(base)) {
+			base = RequestHelper.DEFAULT_FALLBACK_BASE;
+		}
+		Pref.SERVER.set(LoginActivity.this, base);
+			
+		startListCategoriesActivity();
+	}
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
 	 * If there are form errors (invalid email, missing fields, etc.), the
@@ -102,6 +115,14 @@ public class LoginActivity extends Activity {
 		new LoginTask().execute(null, null, null);
 	}
 	
+	private void startListCategoriesActivity() {
+		Log.d(TAG,"Stored username " + Pref.USERNAME.get(LoginActivity.this)
+				 + "Pin " + Pref.PIN.get(LoginActivity.this) + ", Server " + Pref.SERVER.get(LoginActivity.this));
+		
+		finish();
+		startActivity(new Intent(LoginActivity.this, ListCategoriesActivity.class));
+	}
+
 	private class LoginTask extends AsyncTask<Void, Void, Boolean> {		
 
 		@Override
@@ -143,11 +164,7 @@ public class LoginActivity extends Activity {
 				}
 				Pref.SERVER.set(LoginActivity.this, base);
 				
-				Log.d(TAG,"Stored username " + Pref.USERNAME.get(LoginActivity.this)
-						 + "Pin " + Pref.PIN.get(LoginActivity.this) + ", Server " + Pref.SERVER.get(LoginActivity.this));
-				
-				finish();
-				startActivity(new Intent(LoginActivity.this, ListCategoriesActivity.class));
+				startListCategoriesActivity();
 				return;
 			}
 			

@@ -31,7 +31,16 @@ import com.idean.atthack.api.Param;
  * <code>Result fooBar(Bundle params)</code>
  */
 public class RequestHelper {
-	public final static String DEFAULT_FALLBACK_BASE = "http://lightning.att.io:3000/";
+	//public final static String DEFAULT_FALLBACK_BASE = "http://lightning.att.io:3000/";
+	//public final static String DEFAULT_FALLBACK_BASE = "http://car1.hack.att.io:3000/";
+	
+	public final static String DEFAULT_FALLBACK_BASE = "http://12.208.176.40:8181/hwacommerceservice-1/hwa/";
+	
+	public final static  String DEFAULT_USERNAME = "provider";
+	public final static  String DEFAULT_PASSWORD = "1234";
+	public static final String DEFAULT_VIN = "vin1234";
+	
+
 	private static final String TAG = "ReqHlp";
 	private Context mContext;
 
@@ -460,6 +469,58 @@ public class RequestHelper {
 	}
 	// ## END 2.13.6-search-subscribers
 	
+
+	
+	// ## START 2.12.9-get-products
+	@ApiName(value = "2.12.9-get-products", isRequireStatusCheck = false)
+	public Result getProducts(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.appId.addToJson(obj, params);
+		Param.parameters.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "content/v1/commerce/getProducts/"
+				+ Param.userURI.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.12.9-get-products
+	
+	// ## START 2.12.15-purchase
+	@ApiName(value = "2.12.15-purchase", isRequireStatusCheck = false)
+	public Result purchase(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.appId.addToJson(obj, params);
+		Param.parameters.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "content/v1/commerce/purchase/"
+				+ Param.userURI.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.12.15-purchase
+	
+	// ## START 2.12.11-get-user-purchases
+	@ApiName(value = "2.12.11-get-user-purchases", isRequireStatusCheck = false)
+	public Result getUserPurchases(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.appId.addToJson(obj, params);
+		Param.parameters.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "content/v1/commerce/getUserPurchases/"
+				+ Param.userURI.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.12.11-get-user-purchases
+	
+	// ## START 2.12.1-consume
+	@ApiName(value = "2.12.1-consume", isRequireStatusCheck = false)
+	public Result consume(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.appId.addToJson(obj, params);
+		Param.parameters.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "content/v1/commerce/consume/"
+				+ Param.userURI.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.12.1-consume
+	
+
+	
 	// Disabled in the UI
 	public Result checkRequestStatus(String requestId) {
 		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/status/"
@@ -478,6 +539,7 @@ public class RequestHelper {
 			URL url = new URL(urlStr);
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod(HttpVerb.POST.name());
+			conn.setRequestProperty("Content-Type", "application/json");
 			setBasicAuth(conn);
 			conn.setDoOutput(true);
 			writeBody(conn, obj);

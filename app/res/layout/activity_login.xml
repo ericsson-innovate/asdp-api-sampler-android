@@ -68,6 +68,20 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:text="Skip login"
+                android:clickable="true"
+                android:onClick="onSkipLogin"
+                android:textStyle="italic"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/holo_light" />
+
         </LinearLayout>
     </ScrollView>
 
