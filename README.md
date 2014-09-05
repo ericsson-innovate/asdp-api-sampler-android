@@ -11,7 +11,7 @@
 - With Eclipse, it's built automatically
 - With ant, goto the command line:  
 
-  ant debug
+ >>  ant clean debug
 
 # Deploy on a device
 
@@ -20,5 +20,5 @@
 - With ant, goto the command line:  
 
   
-  ant installd
+ >>  ant installd
 
