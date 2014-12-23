@@ -214,6 +214,76 @@ public class RequestHelper {
 	}
 	// ## END 2.6.12-get-vehicle-status
 
+	// ## START 2.6.13-open-trunk
+	@ApiName(value = "2.6.13-open-trunk", isRequireStatusCheck = true)
+	public Result openTrunk(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.latitude.addToJson(obj, params);
+		Param.longitude.addToJson(obj, params);
+		Param.accuracy.addToJson(obj, params);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/openTrunk/"
+				+ Param.vin.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+
+	// ## END 2.6.13-open-trunk
+
+	// ## START 2.6.14-honk
+	@ApiName(value = "2.6.14-honk", isRequireStatusCheck = true)
+	public Result honk(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.latitude.addToJson(obj, params);
+		Param.longitude.addToJson(obj, params);
+		Param.accuracy.addToJson(obj, params);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/honk/"
+				+ Param.vin.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+
+	// ## END 2.6.14-honk
+
+	// ## START 2.6.15-blink
+	@ApiName(value = "2.6.15-blink", isRequireStatusCheck = true)
+	public Result blink(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.latitude.addToJson(obj, params);
+		Param.longitude.addToJson(obj, params);
+		Param.accuracy.addToJson(obj, params);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/blink/"
+				+ Param.vin.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+
+	// ## END 2.6.15-blink
+
+	// ## START 2.6.16-car-alarm-on
+	@ApiName(value = "2.6.16-car-alarm-on", isRequireStatusCheck = true)
+	public Result carAlarmOn(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.latitude.addToJson(obj, params);
+		Param.longitude.addToJson(obj, params);
+		Param.accuracy.addToJson(obj, params);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/carAlarmOn/"
+				+ Param.vin.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+
+	// ## END 2.6.16-car-alarm-on
+
+	// ## START 2.6.17-car-alarm-off
+	@ApiName(value = "2.6.17-car-alarm-off", isRequireStatusCheck = true)
+	public Result carAlarmOff(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.latitude.addToJson(obj, params);
+		Param.longitude.addToJson(obj, params);
+		Param.accuracy.addToJson(obj, params);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/carAlarmOff/"
+				+ Param.vin.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+
+	// ## END 2.6.17-car-alarm-off
+
 	// ## START 2.16.1-add-a-vehicle
 	@ApiName(value = "2.16.1-add-a-vehicle", isRequireStatusCheck = false)
 	public Result addVehicle(Bundle params) {
