@@ -31,10 +31,7 @@ import com.idean.atthack.api.Param;
  * <code>Result fooBar(Bundle params)</code>
  */
 public class RequestHelper {
-	//public final static String DEFAULT_FALLBACK_BASE = "http://lightning.att.io:3000/";
-	public final static String DEFAULT_FALLBACK_BASE = "http://car1.hack.att.io:3000/";
-	
-	//public final static String DEFAULT_FALLBACK_BASE = "http://12.208.176.40:8181/hwacommerceservice-1/hwa/";
+	public final static String DEFAULT_FALLBACK_BASE = "http://luigi.hack.att.io:3000/";	
 	
 	public final static  String DEFAULT_USERNAME = "provider";
 	public final static  String DEFAULT_PASSWORD = "1234";
