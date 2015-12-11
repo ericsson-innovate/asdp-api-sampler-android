@@ -211,6 +211,21 @@ public class RequestHelper {
 	}
 	// ## END 2.6.12-get-vehicle-status
 
+	// ## START 2.6.13-get-bus-info
+	@ApiName(value = "2.6.13-get-bus-info", isRequireStatusCheck = true)
+	public Result getVehicleStatus(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.latitude.addToJson(obj, params);
+		Param.longitude.addToJson(obj, params);
+		Param.accuracy.addToJson(obj, params);
+		String urlStr = getUrlBase() + "remoteservices/v1/vehicle/bus_info/view/"
+				+ Param.vin.getAsString(params);
+
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.6.13-get-bus-info
+
+	/*
 	// ## START 2.6.13-open-trunk
 	@ApiName(value = "2.6.13-open-trunk", isRequireStatusCheck = true)
 	public Result openTrunk(Bundle params) {
@@ -252,6 +267,7 @@ public class RequestHelper {
 	}
 
 	// ## END 2.6.15-blink
+	*/
 
 	// ## START 2.6.16-car-alarm-on
 	@ApiName(value = "2.6.16-car-alarm-on", isRequireStatusCheck = true)
