@@ -553,7 +553,93 @@ public class RequestHelper {
 	// ## END 2.13.6-search-subscribers
 	
 
-	
+	// ## START 2.14.1-add-a-passenger
+	@ApiName(value = "2.14.1-add-a-passenger", isRequireStatusCheck = false)
+	public Result addPassenger(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.uid.addToJson(obj, params);
+		Param.firstName.addToJson(obj, params);
+		Param.lastName.addToJson(obj, params);
+		Param.middleName.addToJson(obj, params);
+		Param.namePrefix.addToJson(obj, params);
+		Param.picture.addToJson(obj, params);
+		Param.dob.addToJson(obj, params);
+		Param.company.addToJson(obj, params);
+		Param.address.addToJsonAsObject(obj, params);
+		Param.defaultAddress.addToJson(obj, params);
+		Param.phone.addToJsonAsObject(obj, params);
+		Param.defaultPhone.addToJson(obj, params);
+		Param.email.addToJsonAsObject(obj, params);
+		Param.defaultEmail.addToJson(obj, params);
+		Param.custom.addToJsonAsObject(obj, params);
+		Param.metas.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "passengers/v1/passenger/add";
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.14.1-add-a-passenger	
+
+
+	// ## START 2.14.2-update-a-passenger
+	@ApiName(value = "2.14.2-update-a-passenger", isRequireStatusCheck = false)
+	public Result updatePassenger(Bundle params) {
+		JSONObject obj = new JSONObject();
+
+		Param.uid.addToJson(obj, params);		
+		Param.pin.addToJson(obj, params);
+		Param.firstName.addToJson(obj, params);
+		Param.lastName.addToJson(obj, params);
+		Param.middleName.addToJson(obj, params);
+		Param.namePrefix.addToJson(obj, params);
+		Param.picture.addToJson(obj, params);
+		Param.dob.addToJson(obj, params);
+		Param.company.addToJson(obj, params);
+		Param.address.addToJsonAsObject(obj, params);
+		Param.defaultAddress.addToJson(obj, params);
+		Param.phone.addToJsonAsObject(obj, params);
+		Param.defaultPhone.addToJson(obj, params);
+		Param.email.addToJsonAsObject(obj, params);
+		Param.defaultEmail.addToJson(obj, params);
+		Param.custom.addToJsonAsObject(obj, params);
+		Param.metas.addToJsonAsObject(obj, params);
+		String urlStr = getUrlBase() + "passengers/v1/passenger/update/" + Param.id.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.14.2-update-a-passenger
+
+
+	// ## START 2.14.3-delete-a-passenger
+	@ApiName(value = "2.14.3-delete-a-passenger", isRequireStatusCheck = false)
+	public Result deletePassenger(Bundle params) {
+		JSONObject obj = new JSONObject();
+		String urlStr = getUrlBase() + "passengers/v1/passenger/delete/" + Param.id.getAsString(params);
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.14.3-delete-a-passenger
+
+	// ## START 2.14.4-view-a-passenger
+	@ApiName(value = "2.14.4-view-a-passenger", isRequireStatusCheck = false)
+	public Result viewPassenger(Bundle params) {
+		String urlStr = getUrlBase() + "passengers/v1/passenger/view/"
+				+ Param.id.getAsString(params); 
+		return sendHttpGet(urlStr);
+	}
+	// ## END 2.14.4-view-a-passenger
+
+	// ## START 2.14.5-search-passengers
+	@ApiName(value = "2.14.5-search-passengers", isRequireStatusCheck = false)
+	public Result searchPassengers(Bundle params) {
+		JSONObject obj = new JSONObject();
+		Param.query.addToJson(obj, params);
+		Param.startNum.addToJson(obj, params);
+		Param.pageSize.addToJson(obj, params);
+		Param.sortItem.addToJsonAsObject(obj, params);		
+		String urlStr = getUrlBase() + "passengers/v1/passenger/search";
+		return sendHttpPost(obj, urlStr);
+	}
+	// ## END 2.14.5-search-passengerss
+
+
+
 	// ## START 2.12.9-get-products
 	@ApiName(value = "2.12.9-get-products", isRequireStatusCheck = false)
 	public Result getProducts(Bundle params) {
